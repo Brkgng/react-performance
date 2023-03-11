@@ -6,7 +6,7 @@ import {useCombobox} from '../use-combobox'
 import {getItems} from '../workerized-filter-cities'
 import {useAsync, useForceRerender} from '../utils'
 
-function Menu({
+const Menu = React.memo(function Menu({
   items,
   getMenuProps,
   getItemProps,
@@ -21,27 +21,24 @@ function Menu({
           getItemProps={getItemProps}
           item={item}
           index={index}
-          selectedItem={selectedItem}
-          highlightedIndex={highlightedIndex}
+          isSelected={selectedItem?.id === item.id}
+          isHighlighted={highlightedIndex === index}
         >
           {item.name}
         </ListItem>
       ))}
     </ul>
   )
-}
-// 🐨 Memoize the Menu here using React.memo
+})
 
-function ListItem({
+const ListItem = React.memo(function ListItem({
   getItemProps,
   item,
   index,
-  selectedItem,
-  highlightedIndex,
+  isSelected,
+  isHighlighted,
   ...props
 }) {
-  const isSelected = selectedItem?.id === item.id
-  const isHighlighted = highlightedIndex === index
   return (
     <li
       {...getItemProps({
@@ -55,8 +52,7 @@ function ListItem({
       })}
     />
   )
-}
-// 🐨 Memoize the ListItem here using React.memo
+})
 
 function App() {
   const forceRerender = useForceRerender()
